@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@model List<Exam>
+@using System.Linq
+
+<!-- Page content -->
+<div class="container-fluid mt--6 pt-5">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header border-0 d-flex">
+                    <h3 class="mb-0">@ViewBag.TableTitle</h3>
+                    @{
+                        if (User.Identity.IsAuthenticated && Context.User.Identities.FirstOrDefault().Claims.Last().Value != "student")
+                        {
+
+                        <a class="btn add-btn btn-sm btn-neutral ml-auto"  asp-area="" asp-controller="Exam" asp-action="Create">New</a>
+                        }
+                    }
+                </div>
+
+                @if (Model is null || Model.Count == 0)
+                {
+                    <div class="container">
+                        <div class="row text-center justify-content-center">
+                            <div class="card text-center mt-5 p-2 bg-transparent shadow-none">
+                                <div class="card-body">
+                                    <p class="card-text">@ViewBag.Message</p>
+                                    <a class="btn add-btn btn-dark" data-toggle="modal" data-target="#FormModal">Add New</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive mt-2">
+                        <div></div>
+                        <table class="table align-items-center table-flush w-100">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th>Başlık</th>
+                                    <th>Tarih</th>
+                                    <th rowspan="1" style="width: 100px;">Araçlar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var row in Model)
+                                {
+                                <tr>
+                                    <th scope="row">@row.Id</th>
+                                    <td class="mb-0 text-sm">@row.Title</td>
+                                    <td class="mb-0 text-sm">@row.CreatedAT</td>
+                                    <td class="mb-0 text-sm">
+                                        @{
+                                            if (User.Identity.IsAuthenticated && User.Identities.FirstOrDefault().Claims.Last().Value == "student")
+                                            {
+
+                                                <a class="dropdown-item" href="/Exam/@row.Id">
+                                                    <span class="details-btn cursor-pointer" title="Show">
+                                                        <i class="fas fa-pencil-square-o text-green show-btn"></i>
+                                                        &nbsp;
+                                                        Cevapla
+                                                    </span>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="dropdown-item" href="#">
+                                                    <span class="delete-btn cursor-pointer" title="Sil">
+                                                        <i class="fas fa-minus-circle text-red"></i>
+                                                        &nbsp;
+                                                        Sil
+                                                    </span>
+                                                </a>
+                                            }
+                                        }
+
+                                    </td>
+                                    @*<td class="text-right" id="@row.Id">
+                                        <div class="dropdown">
+                                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                <a class="dropdown-item" asp-area="" asp-controller="Exam" asp-action="Details" asp-route-id="@row.Id">
+                                                    <span class="details-btn cursor-pointer" title="Show">
+                                                        <i class="fas fa-eye text-green show-btn"></i>
+                                                        &nbsp;
+                                                        details
+                                                    </span>
+                                                </a>
+                                                <a class="dropdown-item" href="#">
+                                                    <span class="delete-btn cursor-pointer" title="Delete">
+                                                        <i class="fas fa-minus-circle text-red"></i>
+                                                        &nbsp;
+                                                        Delete
+                                                    </span>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </td>*@
+                                </tr>
+                                            }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+<script>
+   // document.querySelector('.details-btn').addEventListener('click', (event) => { event.preventDefault(); alert('clicked') })
+</script>
+
+}

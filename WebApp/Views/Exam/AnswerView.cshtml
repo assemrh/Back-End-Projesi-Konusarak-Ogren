@@ -1,0 +1,108 @@
+﻿@model Exam
+@using System.Linq
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card bg-transparent">
+                <div class="card-header">
+                </div>
+                <div class="card-body text-center">
+                    <form method="post" action="/api/values">
+                        <div class="rounded alert-info" asp-validation-summary="All"></div>
+                        <input asp-for="Id" type="hidden"/>
+                            <div class="card w-100 mx-auto">
+                                <div class="card-body">
+                                    <h5 class="card-title">@Model.Title</h5>
+                                    <p class="card-text">@Model.Text</p>
+                                </div>
+                            </div>
+                        @foreach (var Question in Model.Questions)
+                        {
+                            <div class="card question p-3 " id="@Question.Id">
+                                <div class="card-body">
+
+
+                                    <div class="form-group text-center">
+                                        <label for="@("inputQuestion" + Question.Id)"> @Question.Text</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input id="@("answerQuestion" + Question.Id +"1")" class="d-none" value="1" type="radio" name="@($"Answers[{Question.Id-1}]")" data-result="" />
+                                            <label for="@("answerQuestion" + Question.Id +"1")" class="card option py-2 px-1 ">
+                                                @Question.Answers.ElementAt(0).Text
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <input  id="@("answerQuestion" + Question.Id +"2")" class="d-none" value="2" type="radio" name="@($"Answers[{Question.Id-1}]")" data-result=""/>
+                                            <label for="@("answerQuestion" + Question.Id +"2")" class="card option py-2 px-1 ">
+                                                @Question.Answers.ElementAt(1).Text
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input id="@("answerQuestion" + Question.Id +"3")" class="d-none" value="3" type="radio" name="@($"Answers[{Question.Id-1}]")" data-result=""/>
+                                            <label for="@("answerQuestion" + Question.Id +"3")" class="card option py-2 px-1 ">
+                                                @Question.Answers.ElementAt(2).Text
+                                            </label>
+                                        </div>
+                                        <div class="col">
+                                            <input id="@("answerQuestion" + Question.Id +"4")" class="d-none" value="4" type="radio" name="@($"Answers[{Question.Id-1}]")" data-result=""/>
+                                            <label for="@("answerQuestion" + Question.Id +"4")" class="card option py-2 px-1 ">
+                                                @Question.Answers.ElementAt(3).Text
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <button type="submit" class="btn btn-primary">Sınav Tamamla</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+//Scripts
+@section Scripts {
+<script>
+    document.querySelector('form').onsubmit = (e) => {
+        e.preventDefault()
+        let answerInputs = document.querySelectorAll('input[type="radio"]:checked')
+
+        answerInputs.forEach((answer) => {
+            //AnswersArr.push(answer.value)
+            qId = $(answer).closest('.question').attr('id')
+
+            let data = {
+                Id: parseInt(qId),
+                ExamId: parseInt(document.querySelector('input[name="Id"]').value),
+                Answer: parseInt(answer.value)
+            }
+            console.log(data);
+            var settings = {
+                "url": "/api/values/iscorrect",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "data": JSON.stringify(data)
+            };
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+                let isCorrect = false
+                if (response) isCorrect = true
+                answer.setAttribute("data-result", isCorrect)
+                document.querySelector('button[type="submit"]').setAttribute('disabled', 'disabled')
+                document.querySelectorAll('input').forEach((i)=> i.setAttribute('disabled', 'disabled'))
+            });
+        })
+
+    }
+</script>
+}

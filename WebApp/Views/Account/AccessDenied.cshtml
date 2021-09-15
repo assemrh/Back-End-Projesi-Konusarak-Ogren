@@ -1,0 +1,27 @@
+﻿@model LoginModel
+@{ 
+    ViewData["Title"] = "Sayfaya erişim yetkiniz yok";
+    Layout = "_Layout2"; 
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7">
+        <div class="card bg-secondary border-0 mb-0">
+
+            <div class="card-body px-lg-5 py-lg-5">
+                <div class="text-center mb-4">
+                    <i class="fa fa-exclamation-triangle fs-6" ></i><br />
+                    <strong>@ViewBag.ReturnUrl </strong><br /><br />
+
+
+                    sayfaya erişim yetkiniz yok<br /><br /><br /><br />
+                    <a href="/" class="btn btn-primary">
+
+                        <i class="ni curved-next"></i>
+                        Ana Sayfaya Dön
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

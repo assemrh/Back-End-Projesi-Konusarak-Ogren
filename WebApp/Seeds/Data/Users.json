@@ -1,0 +1,18 @@
+[
+  {
+    "Id": 1,
+    "Email": "teacher@gmail.com",
+    "Password": "0000",
+    "Username": "teacher",
+    "FullName": "Öğretmen",
+    "Role": "teacher"
+  },
+  {
+    "Id": 2,
+    "Email": "Student@gmail.com",
+    "Password": "0000",
+    "Username": "Student",
+    "FullName": "Öğrenci",
+    "Role": "student"
+  }
+]
